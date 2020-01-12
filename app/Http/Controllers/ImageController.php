@@ -74,4 +74,20 @@ class ImageController extends Controller
         return redirect()->back()->with('msg', "Added");
     }
 
+    public function albumImage(Request $request)
+    {
+        $this->validate($request,[
+            'image' => 'required'
+        ]);
+        $albumId = request('id');
+        if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $path = $file->store('uploads', 'public');
+                Album::where('id', $albumId)->update([
+                    'image' => $path,
+                ]);
+        }
+        return redirect()->back()->with('msg', "Album Image Added");
+    }
+
 }
